@@ -45,7 +45,6 @@ def get_random_options():
     result_list = [{"id": tmdb_id, "title": title} for tmdb_id, title in zip(random_data['tmdbId'], random_data['title'])]
     return jsonify({"result": result_list})
 
-
 @app.route('/recommendations', methods=['GET', 'POST'])
 def get_recommendations():
     if request.method == 'POST':
@@ -53,9 +52,7 @@ def get_recommendations():
         data = request.get_json()
         chosen_movies = data
         tmdb_ids = [movie['movie_id'] for movie in chosen_movies]
-
         movie_ids = links[links['tmdbId'].isin(tmdb_ids)]['movieId'].tolist()
-
         recommendations = []
         for movie_id in movie_ids:
             movie_index = movies.index[movies['movieId'] == movie_id][0]
@@ -77,6 +74,7 @@ def get_recommendations():
     else:
         # If any other method is used, return a 405 Method Not Allowed status
         return jsonify({'error': 'Method not allowed'}), 405
+
 
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 8080))
